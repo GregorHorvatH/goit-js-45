@@ -376,3 +376,154 @@ console.log('Module 4.1');
 // console.log(calсulateAverage(1, 2, 3, 4)); // 2.5
 // console.log(calсulateAverage(14, 8, 2)); // 8
 // console.log(calсulateAverage(27, 43, 2, 8, 36)); // 23.2
+
+// ======= question 1 ========
+//               0  1  2  3  4  5  6 ...
+// const numbers = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5]; // [1,2,3,4,5]
+//               0  0  0  0  4  4  4  4  8  8  8
+
+// const getUniqueItems = (items) =>
+//   items.filter((item, index, array) => array.indexOf(item) === index);
+
+// const getUniqueItems = (items) => {
+//   const res = [];
+
+//   for (const item of items) {
+//     if (!res.includes(item)) {
+//       res.push(item);
+//     }
+//   }
+
+//   return res;
+// };
+
+// const getUniqueItems = (items) => Array.from(new Set(items));
+
+// console.log(getUniqueItems(numbers));
+
+// ====== Map vs Object =======
+// const obj = {
+//   asd: 123,
+// };
+
+// const obj1 = {}; // "[object Object]"
+// const obj2 = {}; // "[object Object]"
+
+// obj[obj1] = 111; // { asd: 123, [Object Object]: 111 }
+// obj[obj2] = 222; // { asd: 123, [Object Object]: 222 }
+
+// console.log(obj); // { asd: 123, [object Object]: 222 }
+
+// let map = new Map();
+
+// map.set('asd', 123);
+// map.set(obj1, 111);
+// map.set(obj2, 222);
+
+// console.log(map);
+
+// ===== map =====
+// const numbers = [1, 2, 3];
+
+// const map = (arr, callback) => {
+//   const res = [];
+
+//   // for (const item of arr) {
+//   //   res.push(callback(item));
+//   // }
+//   arr.forEach((item, idx, array) => {
+//     res.push(callback(item));
+
+//     array[idx] = 987687;
+//   });
+
+//   return res;
+// };
+
+// const transform = (item) => `<li>${item}</li>`;
+
+// console.log(map(numbers, (item) => item * 2)); // x2 -> [2,4,6]
+// console.log(map(numbers, (item) => item * 3)); // x3 -> [3,6,9]
+// console.log(map(['Bobby', 'Chris', 'Peter'], transform)); // <li>Bobby</li>
+
+// console.log(numbers.map((item) => item * 2));
+
+// ===== array function - arguments =====
+// function fn1() {
+//   console.log(arguments);
+// }
+
+// const fn2 = (...sdfg) => {
+//   console.log(sdfg);
+// };
+
+// fn1(1, 2, 3, 4, 5, 6, 7);
+// fn2(1, 2, 3, 4, 5, 6, 7);
+
+// ===== array function - this =====
+// function fn1() {
+//   console.log(this); // ok
+// }
+
+// const fn2 = () => {
+//   console.log(this); // not ok
+// };
+
+// ===== array function - hoisting =====
+// fn1();
+
+// function fn1() {
+//   console.log('hello'); // ok
+// }
+
+// fn2();
+
+// const fn2 = () => {
+//   console.log(this); // not ok
+// };
+
+// ===== array function - return =====
+// const add = (a, b) => a + b;
+
+// console.log(add(1, 1)); // 2
+// console.log(add(2, 2)); // 4
+
+// ==== array.map ====
+// done
+
+// ==== array.filter ====
+// const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+// const filter = (items, callback) => {
+//   const res = [];
+
+//   items.forEach((item) => {
+//     if (callback(item)) {
+//       res.push(item);
+//     }
+//   });
+
+//   return res;
+// };
+
+// // console.log(filter(numbers, (item) => item < 5)); // x < 5 -> [1,2,3,4]
+// // console.log(filter(numbers, (x) => x > 8)); // x > 8 -> [9]
+// // console.log(filter(numbers, (x) => x > 2 && x < 5)); // x > 2 && x < 5 -> [3,4]
+
+// console.log(filter(['Bobby', 'Peter', 'Chris'], (item) => item.includes('r')));
+
+// ==== array.find ====
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const find = (items, callback) => {
+  for (const item of items) {
+    if (callback(item)) {
+      return item;
+    }
+  }
+};
+
+console.log(find(numbers, (x) => x === 3)); // x === 3 -> 3
+console.log(find(numbers, (x) => x > 4)); // x > 4 -> 5
+console.log(find(['Bobby', 'Peter', 'Chris'], (name) => name === 'Peter')); // name === Peter
+console.log(find(numbers, (x) => x === 30)); // undefined
