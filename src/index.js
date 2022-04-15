@@ -231,3 +231,25 @@ console.log('Q&A 1');
 //     }, 10);
 //   })(i);
 // }
+
+// =========== how to cancel fetch by timeout ============
+// const TEST_URL = 'https://hn.algolia.com/api/v1/search?query=react?page=2';
+
+// const fetchWithTimeout = (url, delay, options = {}) =>
+//   new Promise((resolve, reject) => {
+//     const controller = new AbortController();
+//     const { signal } = controller;
+
+//     fetch(url, { ...options, signal })
+//       .then((resp) => resolve(resp.json()))
+//       .catch(() => console.log('fetch canceled'));
+
+//     setTimeout(() => {
+//       controller.abort();
+//       reject('timeout');
+//     }, delay);
+//   });
+
+// fetchWithTimeout(TEST_URL, 300)
+//   .then((data) => console.log(data))
+//   .catch((error) => console.log(error));
