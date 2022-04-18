@@ -27,7 +27,7 @@ const createForm = () => {
   const input = document.createElement('input');
   const button = document.createElement('button');
 
-  span.textContent = 'Enter text';
+  span.textContent = 'Enter text ';
 
   input.type = 'text'; // input.setAttribute('type', 'text');
   input.name = 'text'; // input.setAttribute('name', 'text');
