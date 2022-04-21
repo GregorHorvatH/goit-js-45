@@ -1,4 +1,4 @@
-console.log('Module 6.1');
+console.log('Module 6.2');
 
 const itemTemplate = ({ id, isDone, text }) => `
 <li data-id="${id}">
@@ -6,48 +6,87 @@ const itemTemplate = ({ id, isDone, text }) => `
     <input type="checkbox" ${isDone ? 'checked' : ''} />
     <span>${text}</span>
   </label>
+  <button>x</button>
 </li>`;
 
-const items = [
-  { id: 1, text: 'sdfgsg', isDone: false },
-  { id: 2, text: 'ery', isDone: true },
-  { id: 3, text: 'xcvb', isDone: false },
-  { id: 4, text: 'asdf', isDone: true },
-  { id: 5, text: 'uoi', isDone: false },
+let items = [
+  { id: '1', text: 'sdfgsg', isDone: false },
+  { id: '2', text: 'ery', isDone: true },
+  { id: '3', text: 'xcvb', isDone: false },
+  { id: '4', text: 'asdf', isDone: true },
+  { id: '5', text: 'uoi', isDone: false },
 ];
 
 const refs = {
-  body: document.querySelector('body'),
+  ul: document.querySelector('ul'),
+  form: document.querySelector('form'),
 };
 
-const createForm = () => {
-  const form = document.createElement('form');
-  const label = document.createElement('label');
-  const span = document.createElement('span');
-  const input = document.createElement('input');
-  const button = document.createElement('button');
+const handleIsDoneChange = (event) => {
+  const parent = event.target.closest('li');
+  const { id } = parent.dataset;
 
-  span.textContent = 'Enter text ';
+  items = items.map((item) =>
+    item.id === id
+      ? {
+          ...item,
+          isDone: !item.isDone,
+        }
+      : item,
+  );
 
-  input.type = 'text'; // input.setAttribute('type', 'text');
-  input.name = 'text'; // input.setAttribute('name', 'text');
-
-  button.type = 'submit';
-  button.textContent = '+ Add';
-
-  label.append(span, input);
-  form.append(label, button);
-
-  refs.body.appendChild(form);
+  renderList();
 };
 
-const createList = () => {
-  const ul = document.createElement('ul');
+const handleDeleteItem = (event) => {
+  const parent = event.target.closest('li');
+  const { id } = parent.dataset;
+
+  items = items.filter((item) => item.id !== id);
+  renderList();
+};
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  const text = event.target.elements.text.value;
+  const newItem = {
+    id: Date.now().toString(),
+    text,
+    isDone: false,
+  };
+
+  items.push(newItem);
+  renderList();
+  refs.form.reset();
+};
+
+const addItemListeners = () => {
+  // checkboxes
+  const listItems = document.querySelectorAll('input[type="checkbox"]');
+
+  listItems.forEach((item) =>
+    item.addEventListener('change', handleIsDoneChange),
+  );
+
+  // delete buttons
+  const deleteButtons = document.querySelectorAll('li>button');
+
+  deleteButtons.forEach((button) =>
+    button.addEventListener('click', handleDeleteItem),
+  );
+};
+
+const renderList = () => {
   const list = items.map(itemTemplate).join('');
 
-  ul.insertAdjacentHTML('beforeend', list);
-  refs.body.appendChild(ul);
+  refs.ul.innerHTML = '';
+  refs.ul.insertAdjacentHTML('beforeend', list);
+
+  // TODO: remove this shit
+  addItemListeners();
 };
 
-createForm();
-createList();
+refs.form.addEventListener('submit', handleSubmit);
+
+renderList();
