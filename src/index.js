@@ -1,4 +1,4 @@
-console.log('Module 6.2');
+console.log('Module 7.1');
 
 const itemTemplate = ({ id, isDone, text }) => `
 <li data-id="${id}">
