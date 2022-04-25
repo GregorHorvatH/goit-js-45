@@ -90,3 +90,5 @@ const renderList = () => {
 refs.form.addEventListener('submit', handleSubmit);
 
 renderList();
+
+console.log('hello');
