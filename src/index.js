@@ -22,30 +22,6 @@ const refs = {
   form: document.querySelector('form'),
 };
 
-const handleIsDoneChange = (event) => {
-  const parent = event.target.closest('li');
-  const { id } = parent.dataset;
-
-  items = items.map((item) =>
-    item.id === id
-      ? {
-          ...item,
-          isDone: !item.isDone,
-        }
-      : item,
-  );
-
-  renderList();
-};
-
-const handleDeleteItem = (event) => {
-  const parent = event.target.closest('li');
-  const { id } = parent.dataset;
-
-  items = items.filter((item) => item.id !== id);
-  renderList();
-};
-
 const handleSubmit = (event) => {
   event.preventDefault();
 
@@ -61,20 +37,40 @@ const handleSubmit = (event) => {
   refs.form.reset();
 };
 
-const addItemListeners = () => {
-  // checkboxes
-  const listItems = document.querySelectorAll('input[type="checkbox"]');
-
-  listItems.forEach((item) =>
-    item.addEventListener('change', handleIsDoneChange),
+const toggleItem = (id) => {
+  items = items.map((item) =>
+    item.id === id
+      ? {
+          ...item,
+          isDone: !item.isDone,
+        }
+      : item,
   );
+};
 
-  // delete buttons
-  const deleteButtons = document.querySelectorAll('li>button');
+const deleteItem = (id) => {
+  items = items.filter((item) => item.id !== id);
+};
 
-  deleteButtons.forEach((button) =>
-    button.addEventListener('click', handleDeleteItem),
-  );
+const handleListClick = (event) => {
+  if (event.target === event.currentTarget) return;
+
+  const parent = event.target.closest('li');
+  const { id } = parent.dataset;
+
+  switch (event.target.nodeName) {
+    case 'INPUT':
+      toggleItem(id);
+      break;
+
+    case 'BUTTON':
+      deleteItem(id);
+      break;
+
+    default:
+      break;
+  }
+  renderList();
 };
 
 const renderList = () => {
@@ -82,13 +78,29 @@ const renderList = () => {
 
   refs.ul.innerHTML = '';
   refs.ul.insertAdjacentHTML('beforeend', list);
-
-  // TODO: remove this shit
-  addItemListeners();
 };
 
 refs.form.addEventListener('submit', handleSubmit);
+refs.ul.addEventListener('click', handleListClick);
 
 renderList();
 
-console.log('hello');
+// ------ event propagation -------
+// document.querySelector('body').addEventListener('click', (event) => {
+//   console.log('------------------------');
+//   console.log(event.currentTarget);
+//   console.log(event.target);
+// });
+
+// ------- question 1 ------
+// const form = document.querySelector('.register-form');
+
+// form.addEventListener('submit', (event) => {
+//   event.preventDefault();
+
+//   const {
+//     elements: { username, password },
+//   } = event.currentTarget;
+
+//   console.log(username.value, password.value);
+// });
