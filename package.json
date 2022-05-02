@@ -1,0 +1,30 @@
+{
+  "name": "goit-js-45",
+  "version": "1.0.0",
+  "description": "# Перед началом работы",
+  "main": "src/index.js",
+  "scripts": {
+    "deploy": "gh-pages -d dist",
+    "start": "node src/index.js",
+    "server": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GregorHorvatH/goit-js-45.git"
+  },
+  "author": "Geri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GregorHorvatH/goit-js-45/issues"
+  },
+  "homepage": "https://github.com/GregorHorvatH/goit-js-45",
+  "dependencies": {
+    "express": "^4.18.1",
+    "gh-pages": "^3.2.3",
+    "nodemon": "^2.0.16",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {}
+}
