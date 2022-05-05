@@ -1,4 +1,4 @@
-console.log('Module 7.1');
+console.log('Module 8.2');
 
 const itemTemplate = ({ id, isDone, text }) => `
 <li data-id="${id}">
@@ -9,17 +9,31 @@ const itemTemplate = ({ id, isDone, text }) => `
   <button>x</button>
 </li>`;
 
-let items = [
-  { id: '1', text: 'sdfgsg', isDone: false },
-  { id: '2', text: 'ery', isDone: true },
-  { id: '3', text: 'xcvb', isDone: false },
-  { id: '4', text: 'asdf', isDone: true },
-  { id: '5', text: 'uoi', isDone: false },
-];
+let items = [];
+// let items = [
+//   { id: '1', text: 'sdfgsg', isDone: false },
+//   { id: '2', text: 'ery', isDone: true },
+//   { id: '3', text: 'xcvb', isDone: false },
+//   { id: '4', text: 'asdf', isDone: true },
+//   { id: '5', text: 'uoi', isDone: false },
+// ];
 
 const refs = {
   ul: document.querySelector('ul'),
   form: document.querySelector('form'),
+};
+
+const loadData = () => {
+  try {
+    items = JSON.parse(localStorage.getItem('todos'));
+  } catch (error) {
+    items = [];
+    console.log(error.message);
+  }
+};
+
+const saveData = () => {
+  localStorage.setItem('todos', JSON.stringify(items));
 };
 
 const handleSubmit = (event) => {
@@ -33,7 +47,7 @@ const handleSubmit = (event) => {
   };
 
   items.push(newItem);
-  renderList();
+  saveAndRender();
   refs.form.reset();
 };
 
@@ -70,7 +84,8 @@ const handleListClick = (event) => {
     default:
       break;
   }
-  renderList();
+
+  saveAndRender();
 };
 
 const renderList = () => {
@@ -80,27 +95,42 @@ const renderList = () => {
   refs.ul.insertAdjacentHTML('beforeend', list);
 };
 
+const saveAndRender = () => {
+  saveData();
+  renderList();
+};
+
+const loadAndRender = () => {
+  loadData();
+  renderList();
+};
+
 refs.form.addEventListener('submit', handleSubmit);
 refs.ul.addEventListener('click', handleListClick);
 
-renderList();
+loadAndRender();
 
-// ------ event propagation -------
-// document.querySelector('body').addEventListener('click', (event) => {
-//   console.log('------------------------');
-//   console.log(event.currentTarget);
-//   console.log(event.target);
-// });
+// -------- question --------
+// const person = {
+//   age: 10,
 
-// ------- question 1 ------
-// const form = document.querySelector('.register-form');
+//   setAge(newAge) {
+//     this.age = newAge;
+//   },
 
-// form.addEventListener('submit', (event) => {
-//   event.preventDefault();
+//   refreshAge(userId) {
+//     const context = this;
 
-//   const {
-//     elements: { username, password },
-//   } = event.currentTarget;
+//     fetchAgeFromDb(function (newAge) {
+//       context.setAge(newAge);
+//     });
+//   },
+// };
 
-//   console.log(username.value, password.value);
-// });
+// function fetchAgeFromDb(cb) {
+//   cb(20);
+// }
+
+// person.refreshAge();
+
+// console.log(person.age);
