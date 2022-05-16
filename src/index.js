@@ -1,5 +1,6 @@
-console.log('Module 8.2');
+import { createTodo, deleteTodo, updateTodo, fetchTodos } from './api.js';
 
+// ---- UI ----
 const itemTemplate = ({ id, isDone, text }) => `
 <li data-id="${id}">
   <label>
@@ -10,60 +11,92 @@ const itemTemplate = ({ id, isDone, text }) => `
 </li>`;
 
 let items = [];
-// let items = [
-//   { id: '1', text: 'sdfgsg', isDone: false },
-//   { id: '2', text: 'ery', isDone: true },
-//   { id: '3', text: 'xcvb', isDone: false },
-//   { id: '4', text: 'asdf', isDone: true },
-//   { id: '5', text: 'uoi', isDone: false },
-// ];
 
 const refs = {
   ul: document.querySelector('ul'),
   form: document.querySelector('form'),
+  loader: document.getElementById('loader'),
 };
 
-const loadData = () => {
-  try {
-    items = JSON.parse(localStorage.getItem('todos'));
-  } catch (error) {
-    items = [];
-    console.log(error.message);
-  }
+const showLoader = () => {
+  refs.loader.classList.add('show');
 };
 
-const saveData = () => {
-  localStorage.setItem('todos', JSON.stringify(items));
+const hideLoader = () => {
+  refs.loader.classList.remove('show');
 };
+
+const loadData = () =>
+  fetchTodos().then((data) => {
+    items = data;
+  });
 
 const handleSubmit = (event) => {
   event.preventDefault();
 
   const text = event.target.elements.text.value;
   const newItem = {
-    id: Date.now().toString(),
     text,
     isDone: false,
   };
 
-  items.push(newItem);
-  saveAndRender();
-  refs.form.reset();
+  showLoader();
+
+  createTodo(newItem)
+    .then((data) => {
+      items.push(data);
+    })
+    .then(() => {
+      renderList();
+    })
+    .then(() => {
+      refs.form.reset();
+    })
+    .catch((error) => {
+      console.log(error.message);
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 const toggleItem = (id) => {
-  items = items.map((item) =>
-    item.id === id
-      ? {
-          ...item,
-          isDone: !item.isDone,
-        }
-      : item,
-  );
+  const item = items.find((item) => item.id === id);
+
+  showLoader();
+
+  updateTodo(id, { isDone: !item.isDone })
+    .then(() => {
+      items = items.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              isDone: !item.isDone,
+            }
+          : item,
+      );
+    })
+    .then(() => {
+      renderList();
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 const deleteItem = (id) => {
-  items = items.filter((item) => item.id !== id);
+  showLoader();
+
+  deleteTodo(id)
+    .then(() => {
+      items = items.filter((item) => item.id !== id);
+    })
+    .then(() => {
+      renderList();
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 const handleListClick = (event) => {
@@ -84,8 +117,6 @@ const handleListClick = (event) => {
     default:
       break;
   }
-
-  saveAndRender();
 };
 
 const renderList = () => {
@@ -95,42 +126,19 @@ const renderList = () => {
   refs.ul.insertAdjacentHTML('beforeend', list);
 };
 
-const saveAndRender = () => {
-  saveData();
-  renderList();
-};
-
 const loadAndRender = () => {
-  loadData();
-  renderList();
+  showLoader();
+
+  loadData()
+    .then(() => {
+      renderList();
+    })
+    .finally(() => {
+      hideLoader();
+    });
 };
 
 refs.form.addEventListener('submit', handleSubmit);
 refs.ul.addEventListener('click', handleListClick);
 
 loadAndRender();
-
-// -------- question --------
-// const person = {
-//   age: 10,
-
-//   setAge(newAge) {
-//     this.age = newAge;
-//   },
-
-//   refreshAge(userId) {
-//     const context = this;
-
-//     fetchAgeFromDb(function (newAge) {
-//       context.setAge(newAge);
-//     });
-//   },
-// };
-
-// function fetchAgeFromDb(cb) {
-//   cb(20);
-// }
-
-// person.refreshAge();
-
-// console.log(person.age);

@@ -27,10 +27,18 @@
       li {
         border: 1px solid green;
       }
+
+      #loader {
+        display: none;
+      }
+
+      #loader.show {
+        display: block;
+      }
     </style>
   </head>
   <body>
-    <h3>Module 8.2 - Todo list (local storage)</h3>
+    <h3>Module 10.1 - Todo list (HTTP requests)</h3>
 
     <form class="form bg1">
       <label>
@@ -40,8 +48,10 @@
       <button type="submit">+ Add</button>
     </form>
 
+    <p id="loader">Loading...</p>
     <ul></ul>
 
-    <script src="./index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script src="./index.js" type="module"></script>
   </body>
 </html>
