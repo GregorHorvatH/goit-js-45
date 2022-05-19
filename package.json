@@ -1,0 +1,27 @@
+{
+  "name": "goit-js-45",
+  "version": "1.0.0",
+  "description": "# Перед началом работы",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GregorHorvatH/goit-js-45.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GregorHorvatH/goit-js-45/issues"
+  },
+  "homepage": "https://github.com/GregorHorvatH/goit-js-45#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16",
+    "uuid": "^8.3.2"
+  }
+}

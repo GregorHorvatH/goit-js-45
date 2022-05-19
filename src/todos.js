@@ -1,4 +1,4 @@
-import { createTodo, deleteTodo, updateTodo, fetchTodos } from './api.js';
+import { createTodo, deleteTodo, updateTodo, fetchTodos } from './todosApi.js';
 
 // ---- UI ----
 const itemTemplate = ({ id, isDone, text }) => `

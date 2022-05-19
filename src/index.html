@@ -22,10 +22,12 @@
 
       ul {
         background-color: beige;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       li {
-        border: 1px solid green;
+        margin-bottom: 5px;
       }
 
       #loader {
@@ -35,10 +37,15 @@
       #loader.show {
         display: block;
       }
+
+      .active {
+        background-color: blue;
+        color: white;
+      }
     </style>
   </head>
   <body>
-    <h3>Module 10.1 - Todo list (HTTP requests)</h3>
+    <h3>Module 10.2 - Pagination</h3>
 
     <form class="form bg1">
       <label>
@@ -51,7 +58,21 @@
     <p id="loader">Loading...</p>
     <ul></ul>
 
+    <!-- <form>
+      <label>
+        <span>Enter text</span>
+        <input type="text" name="query" />
+      </label>
+      <button type="submit">Search</button>
+    </form> -->
+
+    <!-- <ul id="news-list"></ul> -->
+
+    <!-- <div id="page-buttons"></div> -->
+    <!-- <button id="load-more">load more</button> -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
-    <script src="./index.js" type="module"></script>
+    <!-- <script src="./news.js" type="module"></script> -->
+    <script src="./todos.js" type="module"></script>
   </body>
 </html>
