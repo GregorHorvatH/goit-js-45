@@ -9,7 +9,7 @@ export const deleteTodo = (id) =>
   axios.delete(`${URL}/${id}`).then(({ data }) => data);
 
 export const updateTodo = (id, data) =>
-  axios.put(`${URL}/${id}`, data).then(({ data }) => data);
+  axios.patch(`${URL}/${id}`, data).then(({ data }) => data);
 
 export const createTodo = (newItem) =>
   axios.post(URL, newItem).then(({ data }) => data);
