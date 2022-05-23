@@ -44,9 +44,28 @@ app.delete('/todos/:id', (req, res) => {
 });
 
 app.put('/todos/:id', (req, res) => {
-  // todos = todos.filter(({ id }) => id !== req.params.id);
+  const { id } = req.params;
+  const newTodo = req.body;
 
-  res.send(todos);
+  todos = todos.map((todo) => (todo.id === id ? newTodo : todo));
+
+  res.send(newTodo);
+});
+
+app.patch('/todos/:id', (req, res) => {
+  const { id } = req.params;
+  const update = req.body;
+
+  todos = todos.map((todo) =>
+    todo.id === id
+      ? {
+          ...todo,
+          ...update,
+        }
+      : todo,
+  );
+
+  res.send(todos.find((todo) => todo.id === id));
 });
 
 app.listen(port, () => {
