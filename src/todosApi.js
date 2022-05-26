@@ -1,6 +1,6 @@
 // ---- API ----
-// const URL = 'https://61ddd77df60e8f0017668aa9.mockapi.io/api/v1/todos';
-const URL = 'http://localhost:3000/todos';
+export const URL = 'https://61ddd77df60e8f0017668aa9.mockapi.io/api/v1/todos';
+// const URL = 'http://localhost:3000/todos';
 
 // ---- axios ----
 export const fetchTodos = () => axios.get(URL).then(({ data }) => data);

@@ -1,4 +1,10 @@
-import { createTodo, deleteTodo, updateTodo, fetchTodos } from './todosApi.js';
+import {
+  URL,
+  createTodo,
+  deleteTodo,
+  updateTodo,
+  fetchTodos,
+} from './todosApi.js';
 
 // ---- UI ----
 const itemTemplate = ({ id, isDone, text }) => `
@@ -26,12 +32,7 @@ const hideLoader = () => {
   refs.loader.classList.remove('show');
 };
 
-const loadData = () =>
-  fetchTodos().then((data) => {
-    items = data;
-  });
-
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
 
   const text = event.target.elements.text.value;
@@ -42,61 +43,55 @@ const handleSubmit = (event) => {
 
   showLoader();
 
-  createTodo(newItem)
-    .then((data) => {
-      items.push(data);
-    })
-    .then(() => {
-      renderList();
-    })
-    .then(() => {
-      refs.form.reset();
-    })
-    .catch((error) => {
-      console.log(error.message);
-    })
-    .finally(() => {
-      hideLoader();
-    });
+  try {
+    const data = await createTodo(newItem);
+
+    items.push(data);
+    renderList();
+    refs.form.reset();
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  hideLoader();
 };
 
-const toggleItem = (id) => {
+const toggleItem = async (id) => {
   const item = items.find((item) => item.id === id);
 
   showLoader();
 
-  updateTodo(id, { isDone: !item.isDone })
-    .then(() => {
-      items = items.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              isDone: !item.isDone,
-            }
-          : item,
-      );
-    })
-    .then(() => {
-      renderList();
-    })
-    .finally(() => {
-      hideLoader();
-    });
+  try {
+    await updateTodo(id, { isDone: !item.isDone });
+
+    items = items.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            isDone: !item.isDone,
+          }
+        : item,
+    );
+    renderList();
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  hideLoader();
 };
 
-const deleteItem = (id) => {
+const deleteItem = async (id) => {
   showLoader();
 
-  deleteTodo(id)
-    .then(() => {
-      items = items.filter((item) => item.id !== id);
-    })
-    .then(() => {
-      renderList();
-    })
-    .finally(() => {
-      hideLoader();
-    });
+  try {
+    await deleteTodo(id);
+    items = items.filter((item) => item.id !== id);
+    renderList();
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  hideLoader();
 };
 
 const handleListClick = (event) => {
@@ -126,19 +121,60 @@ const renderList = () => {
   refs.ul.insertAdjacentHTML('beforeend', list);
 };
 
-const loadAndRender = () => {
+const loadAndRender = async () => {
   showLoader();
 
-  loadData()
-    .then(() => {
-      renderList();
-    })
-    .finally(() => {
-      hideLoader();
-    });
+  // const response = await fetch(URL);
+  // items = await response.json();
+
+  // const response = await axios(URL);
+  // items = response.data;
+
+  items = await fetchTodos();
+  renderList();
+  hideLoader();
 };
 
 refs.form.addEventListener('submit', handleSubmit);
 refs.ul.addEventListener('click', handleListClick);
 
 loadAndRender();
+
+// ======= async/await =======
+const promisedTimeout = (delay, text) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(text);
+      resolve(`ok - ${text}`);
+    }, delay);
+  });
+
+const fn = async () => {
+  console.log('start');
+
+  // await promisedTimeout(2000, 'promise 1');
+  // await promisedTimeout(2000, 'promise 2');
+  const data = await Promise.all([
+    promisedTimeout(2000, 'promise 1'),
+    promisedTimeout(2000, 'promise 2'),
+  ]);
+
+  console.log(data);
+  console.log('end');
+};
+
+fn();
+
+// console.log('before fn');
+// fn();
+// console.log('after fn');
+
+// const foo = async () => {
+//   await Promise.reject('sdrgdsg');
+
+//   return 'ok';
+// };
+
+// foo()
+//   .then((data) => console.log(data))
+//   .catch((error) => console.log(error));
