@@ -2,6 +2,9 @@
   "name": "goit-js-45",
   "version": "1.0.0",
   "description": "Websockets test on Heroku",
+  "engines": {
+    "node": "16.x"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
